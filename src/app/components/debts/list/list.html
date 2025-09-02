@@ -1,0 +1,163 @@
+<div class="card">
+  <p-table
+    #debtList
+    [value]="debts"
+    dataKey="id"
+    editMode="row"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    size="large"
+  >
+  <ng-template #caption>
+    <div class="flex justify-between">
+        <p-button
+          label="Add"
+          icon="pi pi-plus"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="addNewDebt()"
+        ></p-button>
+        <p-floatlabel variant="on">
+          <p-datepicker
+            inputId="month"
+            showIcon
+            iconDisplay="input"
+            view="month"
+            dateFormat="mm/yy"
+            showClear="true"
+            (onSelect)="filterByMonth()"
+            (onClear)="currentMonthDebts()"
+            [(ngModel)]="filteredMonth"
+          />
+          <label for="month">Filter Month</label>
+        </p-floatlabel>
+      </div>
+  </ng-template>
+  <ng-template #header>
+    <tr>
+        <th class="w-[10%]">Name</th>
+        <th class="w-[15%]">Due Date</th>
+        <th class="w-[15%]">Amount Due</th>
+        <th class="w-[15%]">Date Paid</th>
+        <th class="w-[15%]">Amount Paid</th>
+        <th class="w-[20%]">Notes</th>
+        <th class="w-[10%]"></th>
+      </tr>
+  </ng-template>
+  <ng-template #body let-debt let-editing="editing" let-ri="rowIndex">
+    <tr [pEditableRow]="debt">
+        <td>
+          <p-cellEditor>
+            <ng-template #input>
+              <p-select
+                class="w-full"
+                [options]="debtSvc.categories$ | async"
+                [(ngModel)]="debt.name"
+                appendTo="body"
+              ></p-select>
+            </ng-template>
+            <ng-template #output>
+              {{ debt.name }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template #input>
+              <p-datepicker
+                class="w-full"
+                [(ngModel)]="debt.dueDate"
+                appendTo="body"
+                dataType="string"
+              />
+            </ng-template>
+            <ng-template #output>
+              {{ debt.dueDate | date : 'mediumDate' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template #input>
+              <input class="w-full" pInputText type="text" [(ngModel)]="debt.amountDue" />
+            </ng-template>
+            <ng-template #output>
+              {{ debt.amountDue | currency : 'USD' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template #input>
+              <p-datepicker
+                class="w-full"
+                [(ngModel)]="debt.paidDate"
+                appendTo="body"
+                dataType="string"
+              />
+            </ng-template>
+            <ng-template #output>
+              {{ debt.paidDate | date : 'mediumDate' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template #input>
+              <input class="w-full" pInputText type="text" [(ngModel)]="debt.amountPaid" />
+            </ng-template>
+            <ng-template #output>
+              {{ debt.amountPaid | currency : 'USD' }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template #input>
+              <input class="w-full" pInputText type="text" [(ngModel)]="debt.note" />
+            </ng-template>
+            <ng-template #output>
+              {{ debt.note }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <div class="flex items-center justify-center gap-2">
+            @if (!editing) {
+            <button
+              pButton
+              type="button"
+              pInitEditableRow
+              icon="pi pi-pencil"
+              text
+              rounded
+              severity="secondary"
+              (click)="onRowEdit(debt)"
+            ></button>
+            } @else {
+            <button
+              pButton
+              type="button"
+              pSaveEditableRow
+              icon="pi pi-check"
+              text
+              rounded
+              severity="secondary"
+              (click)="onRowSave(debt)"
+            ></button>
+            <button
+              pButton
+              type="button"
+              pCancelEditableRow
+              icon="pi pi-times"
+              text
+              rounded
+              severity="secondary"
+              (click)="onRowCancel(debt, ri)"
+            ></button>
+            }
+          </div>
+        </td>
+      </tr>
+  </ng-template>
+  </p-table>
+</div>

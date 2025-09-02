@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="createAccount()">
+  <div class="mb-2 flex items-center">
+    <input
+      type="text"
+      pInputText
+      placeholder="First Name"
+      formControlName="firstName"
+      class="flex-auto"
+    />
+  </div>
+  <div class="mb-2 flex items-center">
+    <input
+      type="text"
+      pInputText
+      placeholder="Last Name"
+      formControlName="lastName"
+      class="flex-auto"
+    />
+  </div>
+  <div class="mb-2 flex items-center">
+    <input type="email" pInputText placeholder="Email" formControlName="email" class="flex-auto" />
+  </div>
+  <div class="mb-2 flex items-center">
+    <input
+      type="password"
+      pInputText
+      placeholder="Password"
+      formControlName="password"
+      class="flex-auto"
+    />
+  </div>
+  <div class="mb-2 flex items-center">
+    <input
+      type="password"
+      pInputText
+      placeholder="Confirm Password"
+      formControlName="confirmPassword"
+      class="flex-auto"
+    />
+  </div>
+  <div class="flex justify-end gap-2 mt-6">
+    <p-button label="Cancel" (click)="close()" severity="secondary" />
+    <p-button label="Create" type="submit" />
+  </div>
+</form>
